@@ -6,8 +6,10 @@ import { StatusBar } from "@/components/ambienta/StatusBar";
 import { Hero } from "@/components/ambienta/Hero";
 import { Logo } from "@/components/ambienta/Logo";
 import { useIdle } from "@/hooks/useIdle";
+import { useSpatialNavigation } from "@/hooks/useSpatialNavigation";
 
 const Index = () => {
+  useSpatialNavigation();
   const idle = useIdle(10_000);
 
   return (
