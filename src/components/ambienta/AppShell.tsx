@@ -96,6 +96,8 @@ export const AppShell = ({ children, showRightColumn = true }: Props) => {
 
   return (
     <main className="relative min-h-screen w-screen overflow-x-hidden">
+      {/* Discreet scene-load status pill (top-center) */}
+      <SceneStatusBar />
       {/* Always-mounted overlays — crossfade via opacity (no flash) */}
       <div
         aria-hidden
