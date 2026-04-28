@@ -6,6 +6,7 @@ import { StatusBar } from "@/components/ambienta/StatusBar";
 import { Logo } from "@/components/ambienta/Logo";
 import { ViewModeToggle } from "@/components/ambienta/ViewModeToggle";
 import { MinimalInfo } from "@/components/ambienta/MinimalInfo";
+import { SceneStatusBar } from "@/components/ambienta/SceneStatusBar";
 import { useIdle } from "@/hooks/useIdle";
 import { useSpatialNavigation } from "@/hooks/useSpatialNavigation";
 import { useViewMode } from "@/contexts/ViewModeContext";
@@ -95,6 +96,8 @@ export const AppShell = ({ children, showRightColumn = true }: Props) => {
 
   return (
     <main className="relative min-h-screen w-screen overflow-x-hidden">
+      {/* Discreet scene-load status pill (top-center) */}
+      <SceneStatusBar />
       {/* Always-mounted overlays — crossfade via opacity (no flash) */}
       <div
         aria-hidden
