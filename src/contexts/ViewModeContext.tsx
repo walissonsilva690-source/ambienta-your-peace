@@ -16,9 +16,12 @@ const ORDER: ViewMode[] = ["immersive", "info", "black"];
 export const ViewModeProvider = ({ children }: { children: ReactNode }) => {
   const [mode, setModeState] = useState<ViewMode>("immersive");
 
+  // Always start in "immersive" mode on load so the app's visuals are visible.
+  // Persisted preference is only restored if it's "info" (still shows UI);
+  // "black" is intentionally NOT auto-restored to avoid an empty/black preview.
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY) as ViewMode | null;
-    if (saved && ORDER.includes(saved)) setModeState(saved);
+    if (saved === "info") setModeState("info");
   }, []);
 
   const setMode = useCallback((m: ViewMode) => {
