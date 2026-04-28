@@ -1,9 +1,24 @@
 import { Button } from "@/components/ui/button";
-import { Play, Radio } from "lucide-react";
+import { Play, Radio, AlertCircle } from "lucide-react";
+import { useSceneStatus } from "@/contexts/SceneStatusContext";
+import { HeroSkeleton } from "@/components/ambienta/HeroSkeleton";
 
 export const Hero = () => {
+  const { loaded, failed } = useSceneStatus();
+
+  // Show skeleton while initial scene image is still loading.
+  if (!loaded && !failed) {
+    return <HeroSkeleton />;
+  }
+
   return (
-    <div className="pointer-events-auto max-w-2xl">
+    <div className="pointer-events-auto max-w-2xl animate-fade-in">
+      {failed && (
+        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-muted-foreground">
+          <AlertCircle className="h-3.5 w-3.5 text-primary" />
+          Modo offline · usando fundo estático
+        </div>
+      )}
       <h1 className="text-balance font-display text-5xl font-bold leading-[1.05] text-foreground sm:text-6xl lg:text-7xl">
         Paz. Música.<br />Ambiente.
       </h1>
