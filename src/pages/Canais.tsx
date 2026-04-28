@@ -3,14 +3,9 @@ import { AppShell } from "@/components/ambienta/AppShell";
 import { SceneBackground } from "@/components/ambienta/SceneBackground";
 import { ChannelHero } from "@/components/ambienta/ChannelHero";
 import { ChannelCard } from "@/components/ambienta/ChannelCard";
-import { channelSections, featuredChannel, Channel } from "@/data/channels";
-import { toast } from "@/hooks/use-toast";
+import { channelSections } from "@/data/channels";
 
 const Canais = () => {
-  const handlePlay = (c: Channel | { name: string; description: string }) => {
-    toast({ title: `Tocando: ${c.name}`, description: c.description });
-  };
-
   return (
     <>
       <SceneBackground />
@@ -24,7 +19,7 @@ const Canais = () => {
           </p>
         </header>
 
-        <ChannelHero onPlay={() => handlePlay(featuredChannel)} />
+        <ChannelHero />
 
         <div className="space-y-10">
           {channelSections.map((section) => (
@@ -44,7 +39,7 @@ const Canais = () => {
 
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
                 {section.channels.map((ch) => (
-                  <ChannelCard key={ch.id} channel={ch} onPlay={handlePlay} />
+                  <ChannelCard key={ch.id} channel={ch} />
                 ))}
               </div>
             </section>

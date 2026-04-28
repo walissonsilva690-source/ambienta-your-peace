@@ -1,13 +1,27 @@
-import { Play } from "lucide-react";
+import { Play, Pause, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import jazzHero from "@/assets/channel-jazz-hero.jpg";
-import { featuredChannel } from "@/data/channels";
+import { featuredChannel, findChannel } from "@/data/channels";
+import { useAudioPlayer } from "@/contexts/AudioPlayerContext";
 
-interface Props {
-  onPlay: () => void;
-}
+export const ChannelHero = ({ onPlay }: { onPlay?: () => void }) => {
+  const { meta, status, play } = useAudioPlayer();
+  const ch = findChannel(featuredChannel.id);
+  const isCurrent = meta?.channelId === featuredChannel.id;
+  const isLoading = isCurrent && status === "loading";
+  const isPlaying = isCurrent && status === "playing";
 
-export const ChannelHero = ({ onPlay }: Props) => {
+  const handle = () => {
+    if (onPlay) return onPlay();
+    if (!ch) return;
+    play({
+      streamUrl: ch.streamUrl,
+      channelId: ch.id,
+      channelName: ch.name,
+      description: featuredChannel.description,
+    });
+  };
+
   return (
     <article className="relative isolate mb-10 overflow-hidden rounded-3xl border border-border shadow-card">
       <img
@@ -32,11 +46,17 @@ export const ChannelHero = ({ onPlay }: Props) => {
         <div className="mt-2">
           <Button
             size="lg"
-            onClick={onPlay}
+            onClick={handle}
             className="h-12 rounded-xl bg-gradient-primary px-6 text-base font-semibold text-primary-foreground shadow-glow transition-transform duration-200 hover:scale-105 focus-visible:scale-105"
           >
-            <Play className="mr-2 h-5 w-5 fill-current" />
-            Ouvir agora
+            {isLoading ? (
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+            ) : isPlaying ? (
+              <Pause className="mr-2 h-5 w-5 fill-current" />
+            ) : (
+              <Play className="mr-2 h-5 w-5 fill-current" />
+            )}
+            {isPlaying ? "Tocando agora" : "Ouvir agora"}
           </Button>
         </div>
       </div>
