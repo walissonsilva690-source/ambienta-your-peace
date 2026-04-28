@@ -9,6 +9,7 @@ import Canais from "./pages/Canais.tsx";
 import Radios from "./pages/Radios.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { ViewModeProvider } from "@/contexts/ViewModeContext";
+import { SceneStatusProvider } from "@/contexts/SceneStatusContext";
 
 const queryClient = new QueryClient();
 
@@ -17,18 +18,20 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <ViewModeProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/cenas" element={<Cenas />} />
-          <Route path="/canais" element={<Canais />} />
-          <Route path="/radios" element={<Radios />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-      </ViewModeProvider>
+      <SceneStatusProvider>
+        <ViewModeProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/cenas" element={<Cenas />} />
+              <Route path="/canais" element={<Canais />} />
+              <Route path="/radios" element={<Radios />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </ViewModeProvider>
+      </SceneStatusProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
