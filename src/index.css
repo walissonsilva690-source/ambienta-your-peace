@@ -118,6 +118,29 @@
   animation: pulse-glow 2.4s ease-out infinite;
 }
 
+
 /* Fade UI for relax mode */
 .ui-fade-out { opacity: 0; pointer-events: none; transition: opacity 1.2s ease; }
 .ui-fade-in  { opacity: 1; transition: opacity 0.4s ease; }
+
+/* TV / keyboard focus ring — strong, visible from across the room.
+   Only shown when the user is navigating with keyboard/remote. */
+html[data-input="key"] :focus {
+  outline: none;
+}
+html[data-input="key"] :focus-visible,
+html[data-input="key"] *:focus {
+  outline: 3px solid hsl(var(--primary));
+  outline-offset: 4px;
+  border-radius: 14px;
+  box-shadow: 0 0 0 6px hsl(var(--primary) / 0.25), 0 0 28px hsl(var(--primary) / 0.55);
+  transition: box-shadow 0.15s ease, outline-offset 0.15s ease;
+  z-index: 30;
+  position: relative;
+}
+/* Hide focus ring when using mouse/touch */
+html[data-input="pointer"] :focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
