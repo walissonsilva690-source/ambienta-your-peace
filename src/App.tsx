@@ -8,6 +8,7 @@ import Cenas from "./pages/Cenas.tsx";
 import Canais from "./pages/Canais.tsx";
 import Radios from "./pages/Radios.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import { ViewModeProvider } from "@/contexts/ViewModeContext";
 
 const queryClient = new QueryClient();
 
@@ -16,6 +17,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <ViewModeProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
@@ -26,6 +28,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      </ViewModeProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
