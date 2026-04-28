@@ -13,6 +13,7 @@ export const Hero = () => {
       <div className="mt-8 flex flex-wrap gap-3">
         <Button
           size="lg"
+          data-focus-anchor="immersive-primary"
           className="h-14 rounded-2xl bg-gradient-primary px-7 text-base font-semibold text-primary-foreground shadow-glow transition-transform duration-200 hover:scale-105 focus-visible:scale-105 focus-visible:ring-2 focus-visible:ring-primary"
         >
           <Play className="mr-2 h-5 w-5 fill-current" />

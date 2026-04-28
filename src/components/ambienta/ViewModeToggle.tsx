@@ -18,6 +18,7 @@ export const ViewModeToggle = () => {
         <TooltipTrigger asChild>
           <button
             onClick={cycleMode}
+            data-focus-anchor="mode-toggle"
             aria-label={`Modo de tela: ${label}. Clique para alternar.`}
             className="glass pointer-events-auto flex h-12 w-12 items-center justify-center rounded-xl text-foreground outline-none transition-all duration-200 hover:bg-white/5 hover:text-primary focus-visible:ring-2 focus-visible:ring-primary"
           >

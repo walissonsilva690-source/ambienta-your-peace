@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { Sidebar } from "@/components/ambienta/Sidebar";
 import { NowPlaying } from "@/components/ambienta/NowPlaying";
 import { TimerCard } from "@/components/ambienta/TimerCard";
@@ -40,6 +40,47 @@ export const AppShell = ({ children, showRightColumn = true }: Props) => {
       window.clearTimeout(t);
     };
   }, [mode]);
+
+  // ── Deterministic focus after mode change (post-crossfade) ──
+  // Priority per mode:
+  //   black     → ViewMode toggle (only thing reachable on reveal)
+  //   info      → ViewMode toggle (chrome is the only interactive surface)
+  //   immersive → primary CTA in content, fallback to first sidebar item
+  const FADE_MS = 520; // matches duration-500 + small buffer
+  const firstRender = useRef(true);
+  useEffect(() => {
+    // Skip the initial mount — useSpatialNavigation handles first focus.
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
+    const t = window.setTimeout(() => {
+      const pick = (sel: string) =>
+        document.querySelector<HTMLElement>(sel);
+
+      let target: HTMLElement | null = null;
+      if (mode === "immersive") {
+        target =
+          pick('[data-focus-anchor="immersive-primary"]') ??
+          pick('aside[aria-label="Menu principal"] a');
+      } else if (mode === "info") {
+        target =
+          pick('[data-focus-anchor="mode-toggle"]') ??
+          pick('aside[aria-label="Menu principal"] a');
+      } else {
+        // black mode — focus only when chrome is revealed
+        if (!blackReveal) return;
+        target = pick('[data-focus-anchor="mode-toggle"]');
+      }
+
+      if (target && document.activeElement !== target) {
+        target.focus({ preventScroll: true });
+      }
+    }, FADE_MS);
+
+    return () => window.clearTimeout(t);
+  }, [mode, blackReveal]);
 
   // UI visibility logic per mode
   const isBlack = mode === "black";
