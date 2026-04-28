@@ -6,6 +6,7 @@ import { StatusBar } from "@/components/ambienta/StatusBar";
 import { Logo } from "@/components/ambienta/Logo";
 import { ViewModeToggle } from "@/components/ambienta/ViewModeToggle";
 import { MinimalInfo } from "@/components/ambienta/MinimalInfo";
+import { SceneStatusBar } from "@/components/ambienta/SceneStatusBar";
 import { useIdle } from "@/hooks/useIdle";
 import { useSpatialNavigation } from "@/hooks/useSpatialNavigation";
 import { useViewMode } from "@/contexts/ViewModeContext";
