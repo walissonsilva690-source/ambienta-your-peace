@@ -47,32 +47,39 @@ export const AppShell = ({ children, showRightColumn = true }: Props) => {
   const isImmersive = mode === "immersive";
 
   const chromeVisible = isBlack ? blackReveal : !idle;
-  const showContent = isImmersive; // hero/grids only in immersive
   const showInfoOverlay = isInfo || (isBlack && blackReveal);
+
+  // Crossfade timings
+  const FADE = "transition-opacity duration-500 ease-in-out";
 
   return (
     <main className="relative min-h-screen w-screen overflow-x-hidden">
-      {/* Black-mode opaque overlay over the scene background */}
-      {isBlack && (
-        <div className="fixed inset-0 z-[5] bg-black transition-opacity duration-300" />
-      )}
-      {/* Info-mode flat dark surface (hides video) */}
-      {isInfo && (
-        <div className="fixed inset-0 z-[5] bg-background transition-opacity duration-300" />
-      )}
+      {/* Always-mounted overlays — crossfade via opacity (no flash) */}
+      <div
+        aria-hidden
+        className={`pointer-events-none fixed inset-0 z-[5] bg-black ${FADE} ${
+          isBlack ? "opacity-100" : "opacity-0"
+        }`}
+      />
+      <div
+        aria-hidden
+        className={`pointer-events-none fixed inset-0 z-[5] bg-background ${FADE} ${
+          isInfo ? "opacity-100" : "opacity-0"
+        }`}
+      />
 
-      <div className={`transition-opacity duration-300 ${chromeVisible ? "ui-fade-in" : "ui-fade-out"}`}>
-        {/* Logo */}
+      {/* Chrome (logo, sidebar, right column, status bar) — fades with idle/reveal */}
+      <div
+        className={`${FADE} ${chromeVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+      >
         <header className="fixed left-6 top-6 z-30 sm:left-8 sm:top-8">
           <Logo />
         </header>
 
-        {/* Sidebar - hide in black mode entirely (only on reveal) */}
         <div className="fixed left-6 top-1/2 z-30 hidden -translate-y-1/2 md:block">
           <Sidebar />
         </div>
 
-        {/* Right column */}
         {showRightColumn && (
           <div className="fixed right-6 top-6 z-30 hidden flex-col gap-4 sm:right-8 sm:top-8 lg:flex">
             <NowPlaying />
@@ -80,42 +87,42 @@ export const AppShell = ({ children, showRightColumn = true }: Props) => {
           </div>
         )}
 
-        {/* View mode toggle — bottom-right, always reachable when chrome visible */}
         <div className="fixed bottom-6 right-6 z-40 sm:bottom-8 sm:right-8">
           <ViewModeToggle />
         </div>
 
-        {/* Page content — only in immersive mode */}
-        {showContent && (
-          <div className="relative z-10 min-h-screen pl-6 pr-6 pt-32 pb-32 sm:pl-8 sm:pr-8 md:pl-32 lg:pl-40 lg:pr-[360px]">
-            {children}
-          </div>
-        )}
-
-        {/* Status bar */}
         <footer className="fixed inset-x-6 bottom-6 z-30 sm:inset-x-8 sm:bottom-8 md:left-32 lg:left-40 lg:right-24">
           <StatusBar />
         </footer>
       </div>
 
-      {/* Info overlay (visible in info mode and during black-mode reveal) */}
-      {showInfoOverlay && (
-        <div className="relative z-20">
-          <MinimalInfo />
-        </div>
-      )}
+      {/* Page content — crossfaded; only interactive in immersive */}
+      <div
+        className={`relative z-10 min-h-screen pl-6 pr-6 pt-32 pb-32 sm:pl-8 sm:pr-8 md:pl-32 lg:pl-40 lg:pr-[360px] ${FADE} ${
+          isImmersive ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        {children}
+      </div>
 
-      {idle && isImmersive && (
-        <div className="pointer-events-none fixed bottom-6 left-1/2 z-40 -translate-x-1/2 text-xs text-white/40">
-          Modo Relax · mova para reativar
-        </div>
-      )}
+      {/* Info overlay (always mounted, fades) */}
+      <MinimalInfo visible={showInfoOverlay} />
 
-      {isBlack && !blackReveal && (
-        <div className="pointer-events-none fixed bottom-4 left-1/2 z-[6] -translate-x-1/2 text-[10px] tracking-widest text-white/20">
-          TELA PRETA · toque para mostrar
-        </div>
-      )}
+      <div
+        className={`pointer-events-none fixed bottom-6 left-1/2 z-40 -translate-x-1/2 text-xs text-white/40 ${FADE} ${
+          idle && isImmersive ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        Modo Relax · mova para reativar
+      </div>
+
+      <div
+        className={`pointer-events-none fixed bottom-4 left-1/2 z-[6] -translate-x-1/2 text-[10px] tracking-widest text-white/20 ${FADE} ${
+          isBlack && !blackReveal ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        TELA PRETA · toque para mostrar
+      </div>
     </main>
   );
 };
