@@ -10,7 +10,10 @@ const items = [
 
 export const StatusBar = () => {
   return (
-    <div className="glass pointer-events-auto flex flex-wrap items-center justify-between gap-x-8 gap-y-3 rounded-2xl px-6 py-3 shadow-card">
+    <div
+      aria-hidden="true"
+      className="glass pointer-events-none select-none flex flex-wrap items-center justify-between gap-x-8 gap-y-3 rounded-2xl px-6 py-3 shadow-card"
+    >
       {items.map(({ icon: Icon, label, gold }) => (
         <div key={label} className="flex items-center gap-2 text-xs sm:text-sm">
           <Icon className={`h-4 w-4 ${gold ? "text-gold" : "text-muted-foreground"}`} />
