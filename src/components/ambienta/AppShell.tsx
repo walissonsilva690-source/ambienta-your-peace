@@ -135,7 +135,7 @@ export const AppShell = ({ children, showRightColumn = true }: Props) => {
           <ViewModeToggle />
         </div>
 
-        <footer className="fixed inset-x-6 bottom-6 z-30 sm:inset-x-8 sm:bottom-8 md:left-32 lg:left-40 lg:right-24">
+        <footer className="pointer-events-none fixed inset-x-6 bottom-6 z-30 sm:inset-x-8 sm:bottom-8 md:left-32 lg:left-40 lg:right-24">
           <StatusBar />
         </footer>
       </div>
