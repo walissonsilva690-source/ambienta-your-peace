@@ -16,6 +16,8 @@ export const ChannelHero = ({ onPlay }: { onPlay?: () => void }) => {
     if (!ch) return;
     play({
       streamUrl: ch.streamUrl,
+      fallback: ch.fallback,
+      rescueTag: ch.rescueTag,
       channelId: ch.id,
       channelName: ch.name,
       description: featuredChannel.description,
