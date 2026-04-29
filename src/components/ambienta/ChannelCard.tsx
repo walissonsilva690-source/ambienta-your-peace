@@ -21,6 +21,8 @@ export const ChannelCard = ({ channel, onPlay }: Props) => {
     if (onPlay) return onPlay(channel);
     play({
       streamUrl: channel.streamUrl,
+      fallback: channel.fallback,
+      rescueTag: channel.rescueTag,
       channelId: channel.id,
       channelName: channel.name,
       description: channel.description,
