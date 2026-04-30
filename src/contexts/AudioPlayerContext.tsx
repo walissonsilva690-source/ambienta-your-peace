@@ -306,8 +306,26 @@ export const AudioPlayerProvider = ({ children }: { children: ReactNode }) => {
   return <AudioPlayerContext.Provider value={value}>{children}</AudioPlayerContext.Provider>;
 };
 
+/** Safe fallback so a missing provider never crashes the UI tree. */
+const FALLBACK: AudioPlayerValue = {
+  status: "idle",
+  meta: null,
+  volume: 0.7,
+  isPlaying: false,
+  currentUrl: null,
+  play: () => {},
+  stop: () => {},
+  toggle: () => {},
+  setVolume: () => {},
+};
+
 export const useAudioPlayer = () => {
   const ctx = useContext(AudioPlayerContext);
-  if (!ctx) throw new Error("useAudioPlayer must be used within AudioPlayerProvider");
+  if (!ctx) {
+    if (import.meta.env.DEV) {
+      console.warn("useAudioPlayer used outside AudioPlayerProvider — using inert fallback");
+    }
+    return FALLBACK;
+  }
   return ctx;
 };
