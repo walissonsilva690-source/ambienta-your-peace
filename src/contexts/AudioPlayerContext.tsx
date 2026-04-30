@@ -32,6 +32,9 @@ interface AudioPlayerValue {
   currentUrl: string | null;
   /** Start (or switch to) a continuous stream with crossfade + fallback. */
   play: (opts: PlayOpts) => void;
+  /** Pause the stream but keep meta (so controls remain visible). */
+  pause: () => void;
+  /** Stop and clear meta — controls disappear. */
   stop: () => void;
   toggle: () => void;
   setVolume: (v: number) => void;
