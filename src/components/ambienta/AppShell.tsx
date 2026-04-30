@@ -6,6 +6,7 @@ import { StatusBar } from "@/components/ambienta/StatusBar";
 import { Logo } from "@/components/ambienta/Logo";
 import { ViewModeToggle } from "@/components/ambienta/ViewModeToggle";
 import { MinimalInfo } from "@/components/ambienta/MinimalInfo";
+import { PlayerControls } from "@/components/ambienta/PlayerControls";
 import { SceneStatusBar } from "@/components/ambienta/SceneStatusBar";
 import { useIdle } from "@/hooks/useIdle";
 import { useSpatialNavigation } from "@/hooks/useSpatialNavigation";
@@ -148,6 +149,9 @@ export const AppShell = ({ children, showRightColumn = true }: Props) => {
       >
         {children}
       </div>
+
+      {/* Floating transport controls — visible whenever a stream is active */}
+      <PlayerControls />
 
       {/* Info overlay (always mounted, fades) */}
       <MinimalInfo visible={showInfoOverlay} />

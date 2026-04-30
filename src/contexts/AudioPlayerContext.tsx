@@ -32,6 +32,9 @@ interface AudioPlayerValue {
   currentUrl: string | null;
   /** Start (or switch to) a continuous stream with crossfade + fallback. */
   play: (opts: PlayOpts) => void;
+  /** Pause the stream but keep meta (so controls remain visible). */
+  pause: () => void;
+  /** Stop and clear meta — controls disappear. */
   stop: () => void;
   toggle: () => void;
   setVolume: (v: number) => void;
@@ -206,14 +209,26 @@ export const AudioPlayerProvider = ({ children }: { children: ReactNode }) => {
     [fadeTo, volume],
   );
 
-  const stop = useCallback(async () => {
-    playTokenRef.current++; // cancel any pending fallbacks
+  const pause = useCallback(async () => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio || audio.paused) return;
     await fadeTo(audio, audio.volume, 0, FADE_MS);
     audio.pause();
     setStatus("idle");
+  }, [fadeTo]);
+
+  const stop = useCallback(async () => {
+    playTokenRef.current++; // cancel any pending fallbacks
+    const audio = audioRef.current;
+    if (audio) {
+      await fadeTo(audio, audio.volume, 0, FADE_MS);
+      audio.pause();
+      audio.removeAttribute("src");
+      audio.load();
+    }
+    setStatus("idle");
     setCurrentUrl(null);
+    setMeta(null);
   }, [fadeTo]);
 
   const toggle = useCallback(() => {
@@ -221,11 +236,18 @@ export const AudioPlayerProvider = ({ children }: { children: ReactNode }) => {
     if (!audio || !audio.src) return;
     if (audio.paused) {
       audio.volume = 0;
-      audio.play().then(() => fadeTo(audio, 0, volume, FADE_MS)).catch(() => setStatus("error"));
+      setStatus("loading");
+      audio
+        .play()
+        .then(() => {
+          setStatus("playing");
+          return fadeTo(audio, 0, volume, FADE_MS);
+        })
+        .catch(() => setStatus("error"));
     } else {
-      stop();
+      pause();
     }
-  }, [fadeTo, stop, volume]);
+  }, [fadeTo, pause, volume]);
 
   const setVolume = useCallback((v: number) => {
     const clamped = Math.max(0, Math.min(1, v));
@@ -298,6 +320,7 @@ export const AudioPlayerProvider = ({ children }: { children: ReactNode }) => {
     isPlaying: status === "playing" || status === "loading",
     currentUrl,
     play,
+    pause,
     stop,
     toggle,
     setVolume,
@@ -314,6 +337,7 @@ const FALLBACK: AudioPlayerValue = {
   isPlaying: false,
   currentUrl: null,
   play: () => {},
+  pause: () => {},
   stop: () => {},
   toggle: () => {},
   setVolume: () => {},
