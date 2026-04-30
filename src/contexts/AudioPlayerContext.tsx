@@ -155,7 +155,8 @@ export const AudioPlayerProvider = ({ children }: { children: ReactNode }) => {
       if (token !== playTokenRef.current) return; // superseded
 
       setStatus("loading");
-      setMeta(nextMeta);
+      // Reset track/artist — they belong to the previous stream
+      setMeta({ ...nextMeta, track: undefined, artist: undefined });
       audio.volume = 0;
 
       // Build candidate list: primary → explicit fallbacks → rescue (Radio Browser)
