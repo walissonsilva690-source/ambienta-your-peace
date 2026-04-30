@@ -117,11 +117,11 @@ export const AppShell = ({ children, showRightColumn = true }: Props) => {
       <div
         className={`${FADE} ${chromeVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
       >
-        <header className="fixed left-6 top-6 z-30 sm:left-8 sm:top-8">
+        <header className="fixed left-6 top-6 z-40 sm:left-8 sm:top-8">
           <Logo />
         </header>
 
-        <div className="fixed left-6 top-1/2 z-30 hidden -translate-y-1/2 md:block">
+        <div className="fixed left-6 top-32 z-30 hidden md:block">
           <Sidebar />
         </div>
 
@@ -136,14 +136,14 @@ export const AppShell = ({ children, showRightColumn = true }: Props) => {
           <ViewModeToggle />
         </div>
 
-        <footer className="pointer-events-none fixed inset-x-6 bottom-6 z-30 hidden sm:inset-x-8 sm:bottom-8 md:left-32 md:block lg:left-40 lg:right-24">
+        <footer className="pointer-events-none fixed inset-x-6 bottom-6 z-30 hidden sm:inset-x-8 sm:bottom-8 md:left-[220px] md:block lg:right-24">
           <StatusBar />
         </footer>
       </div>
 
       {/* Page content — crossfaded; only interactive in immersive */}
       <div
-        className={`relative z-10 min-h-screen pl-6 pr-6 pt-32 pb-32 sm:pl-8 sm:pr-8 md:pl-32 lg:pl-40 lg:pr-[360px] ${FADE} ${
+        className={`relative z-10 min-h-screen pl-6 pr-6 pt-32 pb-32 sm:pl-8 sm:pr-8 md:pl-[220px] lg:pr-[360px] ${FADE} ${
           isImmersive ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
