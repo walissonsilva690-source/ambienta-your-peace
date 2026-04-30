@@ -1,0 +1,4 @@
+project_id = "fkplncrhjsgqptauebuf"
+
+[functions.icy-metadata]
+verify_jwt = false

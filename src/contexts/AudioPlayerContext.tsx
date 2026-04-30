@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { radioBrowser } from "@/lib/radioBrowser";
+import { fetchIcyMetadata } from "@/lib/icyMetadata";
 
 export type NowPlayingMeta = {
   channelId: string;
@@ -154,7 +155,8 @@ export const AudioPlayerProvider = ({ children }: { children: ReactNode }) => {
       if (token !== playTokenRef.current) return; // superseded
 
       setStatus("loading");
-      setMeta(nextMeta);
+      // Reset track/artist — they belong to the previous stream
+      setMeta({ ...nextMeta, track: undefined, artist: undefined });
       audio.volume = 0;
 
       // Build candidate list: primary → explicit fallbacks → rescue (Radio Browser)
@@ -231,6 +233,40 @@ export const AudioPlayerProvider = ({ children }: { children: ReactNode }) => {
     const audio = audioRef.current;
     if (audio && !audio.paused) audio.volume = clamped;
   }, []);
+
+  // ICY metadata polling — read StreamTitle from the live stream via edge proxy.
+  // Only runs while we have a currentUrl + status playing/loading. Updates meta
+  // only when track/artist actually change to avoid re-render churn.
+  useEffect(() => {
+    if (!currentUrl) return;
+    if (status !== "playing" && status !== "loading") return;
+
+    const ctrl = new AbortController();
+    let cancelled = false;
+
+    const tick = async () => {
+      const data = await fetchIcyMetadata(currentUrl, ctrl.signal);
+      if (cancelled) return;
+      const nextTrack = data?.title?.trim() || undefined;
+      const nextArtist = data?.artist?.trim() || undefined;
+      setMeta((prev) => {
+        if (!prev) return prev;
+        if (prev.track === nextTrack && prev.artist === nextArtist) return prev;
+        return { ...prev, track: nextTrack, artist: nextArtist };
+      });
+    };
+
+    // Initial read after a short delay (let the stream connect first)
+    const initial = window.setTimeout(tick, 1500);
+    const interval = window.setInterval(tick, 25_000);
+
+    return () => {
+      cancelled = true;
+      ctrl.abort();
+      window.clearTimeout(initial);
+      window.clearInterval(interval);
+    };
+  }, [currentUrl, status]);
 
   // MediaSession — remote control / Android TV media keys
   useEffect(() => {
