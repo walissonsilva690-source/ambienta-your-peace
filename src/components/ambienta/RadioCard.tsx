@@ -28,10 +28,6 @@ export const RadioCard = ({ radio }: Props) => {
     });
   };
 
-  // Pseudo-deterministic gradient from name (visual variety without per-card config)
-  const hue = [...radio.name].reduce((a, c) => a + c.charCodeAt(0), 0) % 360;
-  const grad = `linear-gradient(135deg, hsl(${hue} 70% 35%) 0%, hsl(${(hue + 50) % 360} 60% 18%) 100%)`;
-
   const short = radio.name
     .replace(/[^A-Za-z0-9 ]/g, "")
     .split(" ")
@@ -46,41 +42,39 @@ export const RadioCard = ({ radio }: Props) => {
         onClick={handlePlay}
         aria-label={`Ouvir ${radio.name}`}
         aria-pressed={isPlaying}
-        className={`block w-full overflow-hidden rounded-2xl border bg-card text-left shadow-card transition-all duration-300 hover:scale-[1.05] focus-visible:scale-[1.05] hover:shadow-glow focus-visible:shadow-glow ${
-          isCurrent ? "border-primary ring-2 ring-primary/60" : "border-border"
+        className={`block w-full overflow-hidden rounded-2xl border bg-card/40 text-left shadow-card backdrop-blur transition-all duration-300 hover:scale-[1.04] hover:shadow-glow focus-visible:scale-[1.04] focus-visible:shadow-glow ${
+          isCurrent ? "border-primary ring-2 ring-primary/60" : "border-white/10"
         }`}
       >
-        <div
-          className="relative grid aspect-[5/3] place-items-center overflow-hidden"
-          style={{ backgroundImage: grad }}
-        >
+        {/* Logo plate — bright background to make station logos pop */}
+        <div className="relative grid aspect-[16/9] place-items-center overflow-hidden bg-white">
           {radio.favicon && !imgError ? (
             <img
               src={radio.favicon}
-              alt=""
+              alt={`Logo ${radio.name}`}
               loading="lazy"
               onError={() => setImgError(true)}
-              className="h-16 w-16 rounded-xl object-contain drop-shadow-lg"
+              className="max-h-[70%] max-w-[75%] object-contain"
             />
           ) : (
-            <span className="font-display text-3xl font-extrabold tracking-tight text-white drop-shadow-lg sm:text-4xl">
+            <span className="font-display text-3xl font-extrabold tracking-tight text-foreground/80 sm:text-4xl">
               {short}
             </span>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
           {radio.bitrate > 0 && (
-            <span className="absolute right-2 top-2 rounded-full bg-black/60 px-2 py-0.5 text-[10px] font-medium text-white/90 backdrop-blur">
+            <span className="absolute right-2 top-2 rounded-full bg-black/70 px-2 py-0.5 text-[10px] font-medium text-white/90 backdrop-blur">
               {radio.bitrate} kbps
             </span>
           )}
         </div>
 
-        <div className="flex items-center justify-between gap-2 p-3">
+        {/* Footer: name + location + play */}
+        <div className="flex items-center justify-between gap-2 bg-card/70 p-3">
           <div className="min-w-0">
             <h3 className="truncate text-sm font-semibold text-foreground">{radio.name}</h3>
             <p className="truncate text-xs text-muted-foreground">{radio.location}</p>
           </div>
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground shadow-glow-soft transition-transform duration-200 group-hover:scale-110">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground shadow-glow-soft transition-transform duration-200 group-hover:scale-110">
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : isPlaying ? (
@@ -99,9 +93,9 @@ export const RadioCard = ({ radio }: Props) => {
         }}
         aria-label={fav ? "Remover dos favoritos" : "Adicionar aos favoritos"}
         aria-pressed={fav}
-        className="absolute right-2 top-2 z-10 grid h-8 w-8 place-items-center rounded-full bg-black/50 text-foreground backdrop-blur transition-all duration-200 hover:scale-110 hover:bg-black/70"
+        className="absolute right-2 top-2 z-10 grid h-8 w-8 place-items-center rounded-full bg-black/50 text-white backdrop-blur transition-all duration-200 hover:scale-110 hover:bg-black/70"
       >
-        <Heart className={`h-4 w-4 transition-colors ${fav ? "fill-primary text-primary" : "text-foreground/80"}`} />
+        <Heart className={`h-4 w-4 transition-colors ${fav ? "fill-primary text-primary" : "text-white/80"}`} />
       </button>
     </div>
   );
@@ -109,8 +103,8 @@ export const RadioCard = ({ radio }: Props) => {
 
 export const RadioCardSkeleton = () => (
   <div className="w-full animate-pulse">
-    <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-card">
-      <div className="aspect-[5/3] bg-muted/40" />
+    <div className="overflow-hidden rounded-2xl border border-white/10 bg-card/40 shadow-card">
+      <div className="aspect-[16/9] bg-white/80" />
       <div className="space-y-2 p-3">
         <div className="h-3 w-2/3 rounded bg-muted/60" />
         <div className="h-2.5 w-1/2 rounded bg-muted/40" />
