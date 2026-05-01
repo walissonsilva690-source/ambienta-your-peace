@@ -41,12 +41,25 @@ export const ChannelCard = ({ channel, onPlay }: Props) => {
         backgroundImage: `linear-gradient(135deg, hsl(${from}) 0%, hsl(${to}) 100%)`,
       }}
     >
+      {/* Themed cover image */}
+      <img
+        src={channel.image}
+        alt=""
+        loading="lazy"
+        width={768}
+        height={576}
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+      />
+
+      {/* Subtle icon watermark fallback */}
       <Icon
-        className="absolute -right-4 -top-4 h-32 w-32 text-white/10 transition-transform duration-500 group-hover:scale-110 group-hover:text-white/20"
+        className="absolute -right-4 -top-4 h-24 w-24 text-white/10 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         strokeWidth={1.2}
         aria-hidden
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+
+      {/* Bottom gradient for text legibility */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
 
       {/* Status badge */}
       <span
@@ -65,9 +78,9 @@ export const ChannelCard = ({ channel, onPlay }: Props) => {
         )}
       </span>
 
-      <div className="relative z-10 p-4">
-        <h3 className="text-sm font-semibold leading-tight text-white sm:text-base">{channel.name}</h3>
-        <p className="mt-0.5 line-clamp-1 text-xs text-white/70">{channel.description}</p>
+      <div className="relative z-10 p-3 sm:p-4">
+        <h3 className="text-sm font-semibold leading-tight text-white drop-shadow sm:text-base">{channel.name}</h3>
+        <p className="mt-0.5 line-clamp-1 text-xs text-white/80">{channel.description}</p>
       </div>
     </button>
   );
