@@ -19,7 +19,7 @@ export const Sidebar = () => {
   return (
     <aside
       aria-label="Menu principal"
-      className="glass pointer-events-auto flex h-[calc(100vh-9rem)] w-[180px] flex-col items-stretch gap-1 rounded-2xl px-3 py-4 shadow-card"
+      className="glass pointer-events-auto flex max-h-[calc(100vh-10rem)] w-[180px] flex-col items-stretch gap-1 overflow-y-auto rounded-2xl px-3 py-3 shadow-card"
     >
       <nav className="flex flex-1 flex-col gap-1">
         {items.map(({ to, label, icon: Icon }) => {
