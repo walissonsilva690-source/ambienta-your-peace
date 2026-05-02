@@ -63,12 +63,15 @@
     @apply border-border;
   }
   html, body, #root {
-    @apply h-full;
+    @apply min-h-full;
   }
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
   }
 }
 
