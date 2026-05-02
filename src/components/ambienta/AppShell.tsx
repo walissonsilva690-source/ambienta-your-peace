@@ -8,6 +8,8 @@ import { ViewModeToggle } from "@/components/ambienta/ViewModeToggle";
 import { MinimalInfo } from "@/components/ambienta/MinimalInfo";
 import { PlayerControls } from "@/components/ambienta/PlayerControls";
 import { SceneStatusBar } from "@/components/ambienta/SceneStatusBar";
+import { AdFixed } from "@/components/ambienta/AdFixed";
+import { AdRotating } from "@/components/ambienta/AdRotating";
 import { useIdle } from "@/hooks/useIdle";
 import { useSpatialNavigation } from "@/hooks/useSpatialNavigation";
 import { useViewMode } from "@/contexts/ViewModeContext";
@@ -152,6 +154,11 @@ export const AppShell = ({ children, showRightColumn = true }: Props) => {
 
       {/* Floating transport controls — visible whenever a stream is active */}
       <PlayerControls />
+
+      {/* Anúncios discretos (mock — substituir por backend depois).
+          Plano Premium futuramente irá ocultá-los via useIsPremium(). */}
+      <AdFixed />
+      <AdRotating />
 
       {/* Info overlay (always mounted, fades) */}
       <MinimalInfo visible={showInfoOverlay} />
