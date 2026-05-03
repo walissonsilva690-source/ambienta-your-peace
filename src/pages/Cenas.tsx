@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 import { AppShell } from "@/components/ambienta/AppShell";
 import { SceneBackground } from "@/components/ambienta/SceneBackground";
 import { SceneCard } from "@/components/ambienta/SceneCard";
-import { AdCorners } from "@/components/ambienta/AdCorners";
 import { sceneCatalog, sceneCategories, SceneItem } from "@/data/sceneCatalog";
 import { toast } from "@/hooks/use-toast";
 
@@ -24,7 +23,6 @@ const Cenas = () => {
   return (
     <>
       <SceneBackground />
-      <AdCorners />
       <AppShell>
         <header className="mb-8">
           <h1 className="font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
