@@ -10,6 +10,7 @@ import { PlayerControls } from "@/components/ambienta/PlayerControls";
 import { SceneStatusBar } from "@/components/ambienta/SceneStatusBar";
 import { AdFixed } from "@/components/ambienta/AdFixed";
 import { AdRotating } from "@/components/ambienta/AdRotating";
+import { AdCorners } from "@/components/ambienta/AdCorners";
 import { useIdle } from "@/hooks/useIdle";
 import { useSpatialNavigation } from "@/hooks/useSpatialNavigation";
 import { useViewMode } from "@/contexts/ViewModeContext";
@@ -159,6 +160,7 @@ export const AppShell = ({ children, showRightColumn = true }: Props) => {
           Plano Premium futuramente irá ocultá-los via useIsPremium(). */}
       <AdFixed />
       <AdRotating />
+      <AdCorners />
 
       {/* Info overlay (always mounted, fades) */}
       <MinimalInfo visible={showInfoOverlay} />
