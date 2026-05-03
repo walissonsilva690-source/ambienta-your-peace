@@ -3,12 +3,14 @@ import { AppShell } from "@/components/ambienta/AppShell";
 import { SceneBackground } from "@/components/ambienta/SceneBackground";
 import { ChannelHero } from "@/components/ambienta/ChannelHero";
 import { ChannelCard } from "@/components/ambienta/ChannelCard";
+import { AdCorners } from "@/components/ambienta/AdCorners";
 import { channelSections } from "@/data/channels";
 
 const Canais = () => {
   return (
     <>
       <SceneBackground />
+      <AdCorners />
       <AppShell>
         <header className="mb-6">
           <h1 className="font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
