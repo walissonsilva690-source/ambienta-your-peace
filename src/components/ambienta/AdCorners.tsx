@@ -10,6 +10,7 @@ import { ads } from "@/data/ads";
  * Sem clique, sem som, sem animação.
  */
 const corners = [
+  { pos: "top-left",     style: { top: "12px",    left: "12px"  } },
   { pos: "bottom-left",  style: { bottom: "12px", left: "12px"  } },
   { pos: "bottom-right", style: { bottom: "12px", right: "12px" } },
 ] as const;
