@@ -3,6 +3,7 @@ import { ChevronRight, Search } from "lucide-react";
 import { AppShell } from "@/components/ambienta/AppShell";
 import { SceneBackground } from "@/components/ambienta/SceneBackground";
 import { RadioCard, RadioCardSkeleton, RadioEmpty } from "@/components/ambienta/RadioCard";
+import { AdCorners } from "@/components/ambienta/AdCorners";
 import { LiveRadio, radioBrowser, toLiveRadio } from "@/lib/radioBrowser";
 import { useFavorites } from "@/hooks/useFavorites";
 import { toast } from "@/hooks/use-toast";
@@ -149,6 +150,7 @@ const Radios = () => {
   return (
     <>
       <SceneBackground />
+      <AdCorners />
       <AppShell>
         <header className="mb-6">
           <h1 className="font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
