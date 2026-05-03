@@ -1,27 +1,27 @@
 import { useEffect, useRef, useState } from "react";
 import { rotatingAds } from "@/data/ads";
+import { useAudioPlayer } from "@/contexts/AudioPlayerContext";
 
 /**
  * Anúncio ROTATIVO — canto superior esquerdo, ABAIXO da logo.
  *
- * Comportamento:
- *  - Aparece a cada 15 MINUTOS
- *  - Dura 15 segundos visível
- *  - Some com fade-out de 0.5s
- *  - Sem interação (não clicável, sem hover, sem fechar)
- *  - A cada ciclo mostra o próximo anúncio da lista (round-robin)
+ * Comportamento PREMIUM:
+ *  - Durante EXECUÇÃO (player tocando): aparece a cada 7 minutos
+ *  - Durante NAVEGAÇÃO (sem áudio):    aparece a cada 15 minutos
+ *  - Dura 20 segundos visível
+ *  - Fade in/out de 0.5s
+ *  - Sem som, sem piscar, sem interação (não clicável)
  *
- * Estilo idêntico ao AdFixed: ~95px × 23px, fundo preto 60%,
+ * Estilo idêntico ao AdFixed: ~95×23px, fundo preto 60%,
  * texto cinza #666666, 8px weight 300.
- *
- * Posicionamento: `top: 96px` deixa folga abaixo do bloco da logo
- * (logo está em top-6 / top-8 com altura ~64px).
  */
-const SHOW_INTERVAL_MS = 15 * 60 * 1000; // 15 minutos
-const VISIBLE_MS       = 15 * 1000;       // 15 segundos
-const FADE_MS          = 500;             // fade-out 0.5s
+const INTERVAL_PLAYING_MS = 7 * 60 * 1000;   // 7 min em execução
+const INTERVAL_IDLE_MS    = 15 * 60 * 1000;  // 15 min em navegação
+const VISIBLE_MS          = 20 * 1000;       // 20 segundos
+const FADE_MS             = 500;             // fade 0.5s
 
 export const AdRotating = () => {
+  const { isPlaying } = useAudioPlayer();
   const [index, setIndex]     = useState(0);
   const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -30,6 +30,7 @@ export const AdRotating = () => {
   useEffect(() => {
     if (rotatingAds.length === 0) return;
 
+    const intervalMs = isPlaying ? INTERVAL_PLAYING_MS : INTERVAL_IDLE_MS;
     let fadeTimer: number | undefined;
     let unmountTimer: number | undefined;
 
@@ -37,22 +38,18 @@ export const AdRotating = () => {
       setIndex(cycleRef.current % rotatingAds.length);
       cycleRef.current += 1;
       setMounted(true);
-      // próximo frame → opacity 1 (fade-in suave também)
       requestAnimationFrame(() => setVisible(true));
 
-      // após VISIBLE_MS começa o fade-out
       fadeTimer = window.setTimeout(() => {
         setVisible(false);
-        // depois do fade desmontamos
         unmountTimer = window.setTimeout(() => setMounted(false), FADE_MS);
       }, VISIBLE_MS);
     };
 
-    // Em produção: primeira aparição após 15min.
-    // Em dev: mostra logo após 5s para QA visual.
-    const firstDelay = import.meta.env.DEV ? 5_000 : SHOW_INTERVAL_MS;
+    // Em dev: primeira aparição em 5s para QA visual.
+    const firstDelay = import.meta.env.DEV ? 5_000 : intervalMs;
     const firstTimer = window.setTimeout(showAd, firstDelay);
-    const interval   = window.setInterval(showAd, SHOW_INTERVAL_MS);
+    const interval   = window.setInterval(showAd, intervalMs);
 
     return () => {
       window.clearTimeout(firstTimer);
@@ -60,7 +57,7 @@ export const AdRotating = () => {
       window.clearTimeout(unmountTimer);
       window.clearInterval(interval);
     };
-  }, []);
+  }, [isPlaying]);
 
   if (!mounted) return null;
 
