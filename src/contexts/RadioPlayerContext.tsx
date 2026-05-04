@@ -108,20 +108,11 @@ export const RadioPlayerProvider = ({
 
   const open: RadioPlayerValue["open"] = useCallback(
     (r) => {
-      // Premium → vai direto pro player completo, sem preview
-      if (isPremium) {
-        openFull(r);
-        return;
-      }
-      // Free: clicou na MESMA rádio durante o preview → abre player completo
-      if (stage === "preview" && radio?.id === r.id) {
-        openFull(r);
-        return;
-      }
-      // Outra rádio (ou idle) → inicia preview
-      startPreview(r);
+      // Versão PREMIUM COMPLETA: clique único abre direto o player completo.
+      // (O fluxo de preview de 15s será reativado quando o modo Free for criado.)
+      openFull(r);
     },
-    [isPremium, openFull, radio?.id, stage, startPreview],
+    [openFull],
   );
 
   const closeFull = useCallback(() => {
