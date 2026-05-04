@@ -2,6 +2,7 @@ import { Heart, Play, Pause, Loader2, Radio as RadioIcon } from "lucide-react";
 import { useState } from "react";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useAudioPlayer } from "@/contexts/AudioPlayerContext";
+import { useRadioPlayer } from "@/contexts/RadioPlayerContext";
 import { LiveRadio } from "@/lib/radioBrowser";
 
 interface Props {
@@ -10,7 +11,8 @@ interface Props {
 
 export const RadioCard = ({ radio }: Props) => {
   const { isFavorite, toggle } = useFavorites();
-  const { meta, status, play } = useAudioPlayer();
+  const { meta, status } = useAudioPlayer();
+  const { open } = useRadioPlayer();
   const [imgError, setImgError] = useState(false);
 
   const fav = isFavorite(`radio:${radio.id}`);
@@ -18,15 +20,7 @@ export const RadioCard = ({ radio }: Props) => {
   const isLoading = isCurrent && status === "loading";
   const isPlaying = isCurrent && status === "playing";
 
-  const handlePlay = () => {
-    play({
-      streamUrl: radio.url,
-      rescueTag: radio.tags[0],
-      channelId: radio.id,
-      channelName: radio.name,
-      description: radio.location,
-    });
-  };
+  const handlePlay = () => open(radio);
 
   const short = radio.name
     .replace(/[^A-Za-z0-9 ]/g, "")
