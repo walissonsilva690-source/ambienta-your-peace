@@ -129,9 +129,28 @@ export const AppShell = ({ children, showRightColumn = true }: Props) => {
         </div>
 
         {showRightColumn && (
-          <div className="fixed right-6 top-6 z-30 hidden flex-col gap-4 sm:right-8 sm:top-8 lg:flex">
+          <div className="fixed right-6 top-6 z-30 hidden max-h-[calc(100vh-3rem)] w-[320px] flex-col gap-4 overflow-y-auto sm:right-8 sm:top-8 lg:flex">
             <NowPlaying />
             <TimerCard />
+            {/* Premium card — match reference */}
+            <div className="glass pointer-events-auto w-[320px] rounded-2xl p-4 shadow-card">
+              <div className="mb-3 flex items-center gap-2">
+                <svg className="h-4 w-4 text-gold" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  <path d="M5 16L3 6l5.5 4L12 4l3.5 6L21 6l-2 10H5zm0 2h14v2H5v-2z" />
+                </svg>
+                <span className="text-xs font-bold tracking-widest text-gold">PREMIUM</span>
+              </div>
+              <ul className="space-y-1.5 text-[11px] text-muted-foreground">
+                <li className="flex items-center gap-2"><span className="text-primary">✓</span> Acesso a todas as cenas</li>
+                <li className="flex items-center gap-2"><span className="text-primary">✓</span> 300 rádios ao vivo</li>
+                <li className="flex items-center gap-2"><span className="text-primary">✓</span> Canais 24h sem comerciais</li>
+                <li className="flex items-center gap-2"><span className="text-primary">✓</span> Timer até 4 horas</li>
+                <li className="flex items-center gap-2"><span className="text-primary">✓</span> Qualidade de áudio 320 kbps</li>
+              </ul>
+              <button className="mt-3 w-full rounded-xl bg-gradient-primary py-2 text-xs font-semibold text-primary-foreground shadow-glow-soft transition-transform duration-200 hover:scale-[1.02] focus-visible:scale-[1.02] focus-visible:ring-2 focus-visible:ring-primary">
+                Saiba mais
+              </button>
+            </div>
           </div>
         )}
 
