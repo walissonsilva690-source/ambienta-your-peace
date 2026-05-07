@@ -129,11 +129,11 @@ export const AppShell = ({ children, showRightColumn = true }: Props) => {
         </div>
 
         {showRightColumn && (
-          <div className="fixed right-6 top-6 z-30 hidden max-h-[calc(100vh-3rem)] w-[320px] flex-col gap-4 overflow-y-auto sm:right-8 sm:top-8 lg:flex">
+          <div className="fixed right-6 top-6 z-30 hidden max-h-[calc(100vh-3rem)] w-[260px] flex-col gap-3 overflow-y-auto sm:right-8 sm:top-8 lg:flex">
             <NowPlaying />
             <TimerCard />
             {/* Premium card — match reference */}
-            <div className="glass pointer-events-auto w-[320px] rounded-2xl p-4 shadow-card">
+            <div className="glass pointer-events-auto w-full rounded-2xl p-4 shadow-card">
               <div className="mb-3 flex items-center gap-2">
                 <svg className="h-4 w-4 text-gold" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                   <path d="M5 16L3 6l5.5 4L12 4l3.5 6L21 6l-2 10H5zm0 2h14v2H5v-2z" />
@@ -165,7 +165,7 @@ export const AppShell = ({ children, showRightColumn = true }: Props) => {
 
       {/* Page content — crossfaded; only interactive in immersive */}
       <div
-        className={`relative z-10 min-h-screen pl-6 pr-6 pt-32 pb-32 sm:pl-8 sm:pr-8 md:pl-[220px] lg:pr-[360px] ${FADE} ${
+        className={`relative z-10 min-h-screen pl-6 pr-6 pt-32 pb-32 sm:pl-8 sm:pr-8 md:pl-[220px] lg:pr-[300px] ${FADE} ${
           isImmersive ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
