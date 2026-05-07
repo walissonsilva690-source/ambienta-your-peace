@@ -20,7 +20,7 @@ export const TimerCard = () => {
   const C = 2 * Math.PI * 32; // r=32
 
   return (
-    <div className="glass pointer-events-auto w-[320px] rounded-2xl p-5 shadow-card">
+    <div className="glass pointer-events-auto w-full rounded-2xl p-4 shadow-card">
       <div className="mb-3 flex items-center gap-2 text-primary">
         <Clock className="h-4 w-4" />
         <span className="text-xs font-semibold tracking-wide">Timer</span>

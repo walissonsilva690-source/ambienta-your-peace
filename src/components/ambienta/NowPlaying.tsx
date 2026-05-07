@@ -8,7 +8,7 @@ export const NowPlaying = () => {
   // Idle state — show subtle placeholder
   if (!meta) {
     return (
-      <div className="glass pointer-events-auto w-[320px] rounded-2xl p-4 shadow-card">
+      <div className="glass pointer-events-auto w-full rounded-2xl p-4 shadow-card">
         <div className="mb-3 flex items-center gap-2 text-primary">
           <Music className="h-4 w-4" />
           <span className="text-xs font-semibold tracking-wide">Now Playing</span>
@@ -21,7 +21,7 @@ export const NowPlaying = () => {
   }
 
   return (
-    <div className="glass pointer-events-auto w-[320px] rounded-2xl p-4 shadow-card">
+    <div className="glass pointer-events-auto w-full rounded-2xl p-4 shadow-card">
       <div className="mb-3 flex items-center gap-2 text-primary">
         <Music className="h-4 w-4" />
         <span className="text-xs font-semibold tracking-wide">Now Playing</span>
